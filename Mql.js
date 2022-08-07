@@ -6,7 +6,17 @@ db.companies.find({"offices.country_code": "CAN"},{"_id":0, "name":1, "offices.c
 
 
 /****AGGREGATES: */
-//1 Entreprises par categorie (type d'affaire)
+
+//1 Afficher le nombre d' entreprises avec sucursales au Canada
+db.companies.aggregate([[{
+    $match: {
+     'offices.country_code': 'CAN'
+    }
+   }, {
+    $count: 'country_code'
+   }] ])
+
+//2 Entreprises par categorie (type d'affaire)
 db.companies.aggregate([[{
  $match: {}
 }, {
@@ -18,7 +28,7 @@ db.companies.aggregate([[{
  }
 }]])
 
-//2 Prix moyen des entreprises, triees par annee de constitution ("founded_year")
+//3 Prix moyen des entreprises, triees par annee de constitution ("founded_year")
 db.companies.aggregate([[{
     $match: {
      'acquisition.price_amount': {
@@ -41,7 +51,7 @@ db.companies.aggregate([[{
     }
     }]])
 
-   //3 Entreprises dont l'employee avec le titre "CEO and Founder" ou "CEO and Co-Founder" est encore actif.  Triage par tranche des 10 annees.
+  //4 Entreprises dont l'employee avec le titre "CEO and Founder" ou "CEO and Co-Founder" est encore actif.  Triage par tranche des 10 annees.
    db.companies.aggregate([ [{
     $match: {
      'acquisition.price_amount': {
@@ -79,7 +89,7 @@ db.companies.aggregate([[{
     }
    }] ])
 
-   //4 A partir de la requete precedente, nous l'avons modifie et sauvegarde, comme collection interesante, sous le nom "activeCEOS"
+   //5 A partir de la requete precedente, nous l'avons modifie et sauvegarde, comme collection interesante, sous le nom "activeCEOS"
    db.companies.aggregate([ [{
     $match: {
      'relationships.is_past': false,
@@ -116,7 +126,7 @@ db.companies.aggregate([[{
     $out: 'activeCEOS'
    }] ])
 
-   //5 Jointure avec l'operateeur "lookup" avec la collection "historicalStock" en prenant l'anne d' introduction a la bourse "ipo.pub_year" comme cle de jointure
+   //6 Jointure avec l'operateeur "lookup" avec la collection "historicalStock" en prenant l'anne d' introduction a la bourse "ipo.pub_year" comme cle de jointure
    [{
     db.companies.aggregate([ 
      $match: {
