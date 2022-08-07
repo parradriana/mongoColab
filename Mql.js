@@ -77,10 +77,10 @@ db.companies.aggregate([[{
       }
      }
     }
-   }]])
+   }] ])
 
    //4 A partir de la requete precedente, nous l'avons modifie et sauvegarde, comme collection interesante, sous le nom "activeCEOS"
-   [{
+   db.companies.aggregate([ [{
     $match: {
      'relationships.is_past': false,
      'relationships.title': {
@@ -114,11 +114,12 @@ db.companies.aggregate([[{
     }
    }, {
     $out: 'activeCEOS'
-   }]
+   }] ])
 
    //5 Jointure avec l'operateeur "lookup" avec la collection "historicalStock" en prenant l'anne d' introduction a la bourse "ipo.pub_year" comme cle de jointure
    [{
-    $match: {
+    db.companies.aggregate([ 
+     $match: {
      'ipo.pub_year': {
       $exists: true
      }
@@ -149,4 +150,4 @@ db.companies.aggregate([[{
      external_links: 0,
      partners: 0
     }
-   }]
+   }] ])
