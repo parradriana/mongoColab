@@ -1,6 +1,6 @@
 //*** FIND:*/ 
 
-//1. Afficher les emtrprises avec succursales au Canada: 608
+//1. Afficher les entreprises avec succursales au Canada: 608
 db.companies.find({"offices.country_code": "CAN"},{"_id":0, "name":1, "offices.country_code":1})
             .sort({name:1})
 
