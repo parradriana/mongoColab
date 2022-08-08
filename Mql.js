@@ -24,7 +24,7 @@ db.companies.find(
 ////4.1 Combien d' entreprises ont des bureaux a Montreal:
 db.companies.count({ "offices.city": { $in: ["Montreal", "Montréal"] } });
 
-//5 Sélectionner le nom et ladresse des entreprises de taille moyenne (qui comptent de 100 à 499 employés) et qui ont des bureaux à Montréal, triées par nom
+//5 Sélectionner le nom et l'adresse des entreprises de taille moyenne (qui comptent de 100 à 499 employés) et qui ont des bureaux à Montréal, triées par nom
 db.companies.find({
     $and: [{ "offices.city": { $in: ["Montreal", "Montréal"] } }
         , { number_of_employees: { $gt: 99 } }, { number_of_employees: { $lt: 499 } }]
